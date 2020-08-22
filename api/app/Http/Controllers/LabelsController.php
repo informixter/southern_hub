@@ -10,76 +10,62 @@ class LabelsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return
      */
-    public function index()
+    public function index(int $id)
     {
-        //
+        return Labels::where('model_id', $id)->get()->pluck('name', 'id')->toArray();
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param int $model_id ID модели
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(int $model_id, Request $request)
     {
-        //
-    }
+        $label = new Labels;
+        $label->name = $request->get("name");
+        $label->model_id = $model_id;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($label->save()) {
+            return response()->json(['status' => 'ok'], 200);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Labels  $labels
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Labels $labels)
-    {
-        //
+        return response()->json(['status' => 'cant save model'], 500);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Labels  $labels
+     * @param int $model_id
+     * @param int $label_id
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Labels $labels)
+    public function edit(int $model_id, int $label_id, Request $request)
     {
-        //
+        $label = Labels::where('id', $label_id);
+        $label->name = $request->get("name");
+        if ($label->save()) {
+            return response()->json(['status' => 'ok'], 200);
+        }
+        return response()->json(['status' => 'cant save model'], 500);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Labels  $labels
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Labels $labels)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Labels  $labels
+     * @param int $label_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Labels $labels)
+    public function destroy(int $label_id)
     {
-        //
+        Labels::find($label_id)->delete();
+        return response()->json(['status' => 'ok'], 200);
     }
 }

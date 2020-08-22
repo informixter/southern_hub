@@ -37,13 +37,13 @@ class ModelsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param int $model_id
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $id, \Illuminate\Http\Request $request)
+    public function edit(int $model_id, \Illuminate\Http\Request $request)
     {
-        $model = Models::find($id);
+        $model = Models::find($model_id);
         $model->name = $request->get("name");
         if ($model->save()) {
             return response()->json(['status' => 'ok'], 200);
@@ -55,12 +55,13 @@ class ModelsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param int $model_id
      * @param \App\Models $models
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id, Models $models)
+    public function destroy(int $model_id, Models $models)
     {
-        Models::find($id)->delete();
+        Models::find($model_id)->delete();
         return response()->json(['status' => 'ok'], 200);
     }
 }

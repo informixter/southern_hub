@@ -14,12 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/models/{id}/texts', 'TextsController@index');
+Route::get('/models/{model_id}/texts', 'TextsController@index');
 Route::get('/models', 'ModelsController@index');
 Route::post('/models', 'ModelsController@create');
-Route::put('/models/{id}', 'ModelsController@edit');
-Route::delete('/models/{id}', 'ModelsController@destroy');
+Route::put('/models/{model_id}', 'ModelsController@edit');
+Route::delete('/models/{modelid}', 'ModelsController@destroy');
 
+
+Route::get('/labels/{model_id}', 'LabelsController@index');
+Route::post('/labels/{model_id}', 'LabelsController@create');
+Route::post('/labels/{model_id}/{label_id}', 'LabelsController@edit');
+Route::delete('/labels/{id}', 'LabelsController@destroy');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

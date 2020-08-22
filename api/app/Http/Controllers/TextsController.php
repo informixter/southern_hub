@@ -11,13 +11,13 @@ class TextsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $id
-     * @return void
+     * @param int $model_id
+     * @return array
      */
-    public function index(int $id)
+    public function index(int $model_id)
     {
         $model = Models::with('Labels')->first();
-        $texts = Texts::where('model_id', $id)->orderBy('id')->get()->toArray();
+        $texts = Texts::where('model_id', $model_id)->orderBy('id')->get()->toArray();
         return ['model' => $model, 'text' => $texts];
     }
 
