@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/models/{id}/texts', 'TextsController@index');
 Route::get('/models', 'ModelsController@index');
+Route::post('/models', 'ModelsController@create');
+Route::put('/models/{id}', 'ModelsController@edit');
+Route::delete('/models/{id}', 'ModelsController@destroy');
+
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

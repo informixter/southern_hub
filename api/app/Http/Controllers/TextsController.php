@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models;
 use App\Texts;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,14 @@ class TextsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return void
      */
-    public function index()
+    public function index(int $id)
     {
-        //
+        $model = Models::with('Labels')->first();
+        $texts = Texts::where('model_id', $id)->orderBy('id')->get()->toArray();
+        return ['model' => $model, 'text' => $texts];
     }
 
     /**
@@ -30,7 +34,7 @@ class TextsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +45,7 @@ class TextsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Texts  $texts
+     * @param \App\Texts $texts
      * @return \Illuminate\Http\Response
      */
     public function show(Texts $texts)
@@ -52,7 +56,7 @@ class TextsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Texts  $texts
+     * @param \App\Texts $texts
      * @return \Illuminate\Http\Response
      */
     public function edit(Texts $texts)
@@ -63,8 +67,8 @@ class TextsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Texts  $texts
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Texts $texts
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Texts $texts)
@@ -75,7 +79,7 @@ class TextsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Texts  $texts
+     * @param \App\Texts $texts
      * @return \Illuminate\Http\Response
      */
     public function destroy(Texts $texts)
