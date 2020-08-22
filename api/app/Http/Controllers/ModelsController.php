@@ -22,65 +22,47 @@ class ModelsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
-    }
+        $model = new Models;
+        $model->name = $request->get("name");
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($model->save()) {
+            return response()->json(['status' => 'ok'], 200);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models  $models
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Models $models)
-    {
-        //
+        return response()->json(['status' => 'cant save model'], 500);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models  $models
+     * @param int $model_id
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Models $models)
+    public function edit(int $model_id, \Illuminate\Http\Request $request)
     {
-        //
+        $model = Models::find($model_id);
+        $model->name = $request->get("name");
+        if ($model->save()) {
+            return response()->json(['status' => 'ok'], 200);
+        }
+        return response()->json(['status' => 'cant save model'], 500);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models  $models
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Models $models)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models  $models
+     * @param int $model_id
+     * @param \App\Models $models
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Models $models)
+    public function destroy(int $model_id, Models $models)
     {
-        //
+        Models::find($model_id)->delete();
+        return response()->json(['status' => 'ok'], 200);
     }
 
     public function test ()
