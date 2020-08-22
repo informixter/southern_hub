@@ -3,4 +3,5 @@ lxml
 -e git+https://github.com/keras-team/keras-tuner.git@1.0.2rc0#egg=keras-tuner-1.0.2rc0
 pymorphy2
 requests
+jupyter
 nltk

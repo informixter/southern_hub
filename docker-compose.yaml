@@ -25,6 +25,18 @@ services:
       - "8080:8080"
     networks:
       - backend
+    command: ["python", "./start.py"]
+  jupyter:
+    hostname: auto-ml
+    build:
+      context: ./auto-ml
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    command: ["jupyter", "notebook"]
 networks:
   backend:
     driver: bridge
