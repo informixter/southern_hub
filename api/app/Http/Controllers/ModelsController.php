@@ -14,7 +14,7 @@ class ModelsController extends Controller
      */
     public function index()
     {
-        //
+        return Models::with('Labels')->get()->toArray();
     }
 
     /**
