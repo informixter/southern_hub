@@ -13,7 +13,7 @@ class LabelsTextsUpdate extends Migration
      */
     public function up()
     {
-        Schema::create('labels', function (Blueprint $table) {
+        Schema::create('labels_texts', function (Blueprint $table) {
             $table->integer("model_id")->unsigned()->index();
             $table->integer("text_id")->unsigned()->index();
         });
@@ -26,6 +26,6 @@ class LabelsTextsUpdate extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('labels');
+        Schema::dropIfExists('labels_texts');
     }
 }
