@@ -1,0 +1,26 @@
+::ng-deep .mat-card-header-text
+{
+  width: 100% !important;
+}
+
+::ng-deep textarea
+{
+  resize: none;
+}
+
+.tag
+{
+  .tag-text
+  {
+    background: rgba(119, 1, 255, 0.15);
+    color: #7701ff;
+    padding: 5px 10px;
+    font-size: 14px;
+    display: inline-block;
+  }
+}
+
+::ng-deep .mat-list-item
+{
+  height: 40px !important;;
+}

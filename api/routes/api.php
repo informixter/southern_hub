@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/models', 'ModelsController@index');
+Route::get('/test', 'ModelsController@test');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
