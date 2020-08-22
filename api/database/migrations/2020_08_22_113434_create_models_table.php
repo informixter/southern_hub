@@ -16,8 +16,8 @@ class CreateModelsTable extends Migration
         Schema::create('models', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->enum('status', ['markup', 'learing', 'ready'])->index();
-            $table->enum('type', ['classification', 'keys'])->index();
+            $table->enum('status', ['markup', 'learing', 'ready'])->default('markup')->index();
+            $table->enum('type', ['classification', 'keys'])->default('classification')->index();
             $table->timestamps();
         });
     }
