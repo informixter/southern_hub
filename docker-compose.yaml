@@ -52,7 +52,7 @@ services:
       APP_ENV: local
       APP_KEY: base64:8ULh8JpYt1vUfmzSjm17mjRPu8VTA05YUvW3foSVlts=
       APP_DEBUG: "true"
-      APP_URL: http://datamonetize.insrt.ru
+      APP_URL: http://south.insrt.ru
       LOG_CHANNEL: stack
       DB_CONNECTION: pgsql
       DB_HOST: postgres
