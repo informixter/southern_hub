@@ -37,6 +37,46 @@ services:
     networks:
       - backend
     command: ["jupyter", "notebook"]
+  api:
+    hostname: api
+    image: api-image
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_KEY: base64:8ULh8JpYt1vUfmzSjm17mjRPu8VTA05YUvW3foSVlts=
+      APP_DEBUG: "true"
+      APP_URL: http://datamonetize.insrt.ru
+      LOG_CHANNEL: stack
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: laravel
+      DB_USERNAME: default
+      DB_PASSWORD: secret
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: 120
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./api:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d/
+    networks:
+      - backend
+    depends_on:
+      - api
+    restart: unless-stopped
 networks:
   backend:
     driver: bridge
