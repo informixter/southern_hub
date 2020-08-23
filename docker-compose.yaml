@@ -30,25 +30,12 @@ services:
     networks:
       - backend
     command: ["python", "./start.py"]
-  jupyter:
-    hostname: jupyter
-    build:
-      context: ./auto-ml
-      dockerfile: Dockerfile
-    restart: unless-stopped
+  backend_shiva:
+    container_name: backend_shiva
+    hostname: backend_shiva
+    image: api-image-shiva
     volumes:
-      - ./auto-ml/notebook:/usr/src/app/notebook
-      - ./auto-ml/gensim-data:/root/gensim-data
-    ports:
-      - "8888:8888"
-    networks:
-      - backend
-    command: ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root"]
-  api:
-    hostname: api
-    image: api-image
-    volumes:
-      - ./api:/var/www/html
+      - ./api:/var/www/html/backend
     networks:
       - backend
     restart: unless-stopped
@@ -59,7 +46,7 @@ services:
       APP_ENV: local
       APP_KEY: base64:8ULh8JpYt1vUfmzSjm17mjRPu8VTA05YUvW3foSVlts=
       APP_DEBUG: "false"
-      APP_URL: http://south.insrt.ru
+      APP_URL: http://south.insrt.ru/api
       LOG_CHANNEL: stack
       DB_CONNECTION: pgsql
       DB_HOST: postgres
@@ -73,16 +60,16 @@ services:
       SESSION_DRIVER: file
       SESSION_LIFETIME: 120
   nginx:
-    image: nginx:latest
+    image: frontend-shiva
     ports:
       - "80:80"
     volumes:
-      - ./api:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d/
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./api:/var/www/html/backend
     networks:
       - backend
     depends_on:
-      - api
+      - backend_shiva
     restart: unless-stopped
 networks:
   backend:
