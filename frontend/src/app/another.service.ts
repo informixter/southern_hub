@@ -12,17 +12,17 @@ export class AnotherService {
 
   run (idModel)
   {
-    return this.httpClient.get(`/api/api/models/${idModel}/run`);
+    return this.httpClient.get(`http://localhost/api/models/${idModel}/run`);
   }
 
   info (idModel)
   {
-    return this.httpClient.get(`/api/api/models/${idModel}/info`);
+    return this.httpClient.get(`http://localhost/api/models/${idModel}/info`);
   }
 
-  testRequest (idModel)
+  testRequest (idModel, text)
   {
-    return this.httpClient.get(`/api/api/models/${idModel}/testRequest`);
+    return this.httpClient.post(`http://localhost/api/models/${idModel}/testRequest`, {text});
   }
 
 

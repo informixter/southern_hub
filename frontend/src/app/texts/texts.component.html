@@ -3,12 +3,16 @@
     <button [routerLink]="['/models']" style="vertical-align: 5px" mat-icon-button>
     <mat-icon>arrow_back</mat-icon>
   </button>
-    Исходные данные <span *ngIf="model">для модели «{{model.name}}»</span>
+    Исходные данные
   </span>
   <div>
-    <button (click)="run()" mat-raised-button color="primary">
+    <button (click)="run()" class="mr-3" mat-raised-button color="primary">
       <mat-icon>wifi_tethering</mat-icon>
       Запустить обучение
+    </button>
+    <button (click)="toTest()" class="mr-3" mat-raised-button color="primary">
+      <mat-icon>check</mat-icon>
+      Тестирование
     </button>
     <button (click)="add()" mat-raised-button color="primary">
       <mat-icon>add</mat-icon>
@@ -17,7 +21,10 @@
   </div>
 </h1>
 
-{{info}}
+<p *ngIf="model" class="mt-3 mb-3">
+  Модель: {{model.name}}<br/>
+  Статус: {{model.status}}<br/>
+</p>
 
 <mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="2" color="primary"></mat-spinner>
 

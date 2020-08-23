@@ -67,6 +67,11 @@ export class TextsComponent implements OnInit {
     });
   }
 
+  toTest ()
+  {
+    this.router.navigate(['/test', this.model.id]);
+  }
+
   getInfo ()
   {
     this.zalupaService.info(this.route.snapshot.params.idModel).subscribe(response =>
