@@ -22,6 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { ModelsComponent } from './models/models.component';
 import { UserInputComponent } from './user-input/user-input.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AnotherService} from "./another.service";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatListModule,
     MatProgressSpinnerModule
   ],
-  providers: [MainService],
+  providers: [MainService, AnotherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,11 +5,19 @@
   </button>
     Исходные данные <span *ngIf="model">для модели «{{model.name}}»</span>
   </span>
-  <button (click)="add()" mat-raised-button color="primary">
-    <mat-icon>add</mat-icon>
-    Добавить текст
-  </button>
+  <div>
+    <button (click)="run()" mat-raised-button color="primary">
+      <mat-icon>wifi_tethering</mat-icon>
+      Запустить обучение
+    </button>
+    <button (click)="add()" mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      Добавить текст
+    </button>
+  </div>
 </h1>
+
+{{info}}
 
 <mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="2" color="primary"></mat-spinner>
 

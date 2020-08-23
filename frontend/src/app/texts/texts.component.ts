@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MainService} from "../main.service";
+import {AnotherService} from "../another.service";
 
 @Component({
   selector: 'app-texts',
@@ -9,13 +10,14 @@ import {MainService} from "../main.service";
 })
 export class TextsComponent implements OnInit {
 
-  constructor(private router : Router, private service : MainService, private route : ActivatedRoute) { }
+  constructor(private router : Router, private service : MainService, private route : ActivatedRoute, private zalupaService : AnotherService) { }
 
   model : any = null;
   texts = [];
 
   loading = false;
   saving = false;
+  info = '';
 
   ngOnInit(): void {
     this.loading = true;
@@ -55,7 +57,29 @@ export class TextsComponent implements OnInit {
       this.texts.unshift(response);
       this.saving = false;
     });
+  }
 
+  testRequest ()
+  {
+    this.zalupaService.testRequest(this.route.snapshot.params.idModel).subscribe(response =>
+    {
+      alert(JSON.stringify(response));
+    });
+  }
 
+  getInfo ()
+  {
+    this.zalupaService.info(this.route.snapshot.params.idModel).subscribe(response =>
+    {
+      this.info = JSON.stringify(response);
+    });
+  }
+
+  run ()
+  {
+      this.zalupaService.run(this.route.snapshot.params.idModel).subscribe(response =>
+      {
+        alert(JSON.stringify(response));
+      });
   }
 }
