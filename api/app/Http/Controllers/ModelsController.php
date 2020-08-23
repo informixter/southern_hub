@@ -6,6 +6,7 @@ use App\Labels;
 use App\LabelsTexts;
 use App\Models;
 use App\Texts;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class ModelsController extends Controller
@@ -19,27 +20,38 @@ class ModelsController extends Controller
     {
         $text = $request->get("text");
         $words = explode(" ", mb_strtoupper($text));
-        $lemms = $this -> normalizeMyStem($words);
-        array_walk($words, function (&$word) use ($lemms) {$this -> normalizWord($word, $lemms);});
+        $lemms = $this->normalizeMyStem($words);
+        array_walk($words, function (&$word) use ($lemms) {
+            $this->normalizWord($word, $lemms);
+        });
 
         $tags = [];
         $texts = Texts::where('model_id', 2)->orderBy('id')->get()->toArray();
-        for ($i = 0, $max = sizeof($texts); $i < $max; $i++)
-        {
+        for ($i = 0, $max = sizeof($texts); $i < $max; $i++) {
             $texts[$i]['tags'] = LabelsTexts::where('text_id', $texts[$i]['id'])->get()->toArray();
-            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++)
-            {
+            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++) {
                 $texts[$i]['tags'][$j] = Labels::where('id', $texts[$i]['tags'][$j]['model_id'])->get()->toArray()[0]['name'];
             }
 
             $wordsTemp = explode(' | ', $texts[$i]['text']);
-            if (sizeof(array_intersect($words, $wordsTemp)) !== 0)
-            {
+            if (sizeof(array_intersect($words, $wordsTemp)) !== 0) {
                 $tags = array_merge($tags, $texts[$i]['tags']);
             }
         }
 
-        return $this -> findResultForTags($tags);
+        $add_tags = [];
+        $client = new Client();
+        try {
+            $response = $client->post("http://auto-ml:8080/predict/1", ['headers' => ['ContentType' => 'application/json'], 'json' => ['text' => $request->get('text')]]);
+            $add_tags = json_decode($response->getBody()->getContents(), true);
+        } catch (RequestException $e) {
+        }
+
+        if (count($add_tags) > 0) {
+            $tags = array_merge($tags, $add_tags);
+        }
+
+        return $this->findResultForTags(array_unique($tags));
     }
 
     /**
@@ -51,46 +63,42 @@ class ModelsController extends Controller
     {
         $text = 'плохой интернет';
         $words = explode(" ", mb_strtoupper($text));
-        $lemms = $this -> normalizeMyStem($words);
-        array_walk($words, function (&$word) use ($lemms) {$this -> normalizWord($word, $lemms);});
+        $lemms = $this->normalizeMyStem($words);
+        array_walk($words, function (&$word) use ($lemms) {
+            $this->normalizWord($word, $lemms);
+        });
 
         $tags = [];
         $texts = Texts::where('model_id', 2)->orderBy('id')->get()->toArray();
-        for ($i = 0, $max = sizeof($texts); $i < $max; $i++)
-        {
+        for ($i = 0, $max = sizeof($texts); $i < $max; $i++) {
             $texts[$i]['tags'] = LabelsTexts::where('text_id', $texts[$i]['id'])->get()->toArray();
-            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++)
-            {
+            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++) {
                 $texts[$i]['tags'][$j] = Labels::where('id', $texts[$i]['tags'][$j]['model_id'])->get()->toArray()[0]['name'];
             }
 
             $wordsTemp = explode(' | ', $texts[$i]['text']);
-            if (sizeof(array_intersect($words, $wordsTemp)) !== 0)
-            {
+            if (sizeof(array_intersect($words, $wordsTemp)) !== 0) {
                 $tags = array_merge($tags, $texts[$i]['tags']);
             }
         }
 
-        return $this -> findResultForTags($tags);
+        return $this->findResultForTags($tags);
     }
 
     /**
      * @param $tags
      */
-    public function findResultForTags ($tags)
+    public function findResultForTags($tags)
     {
         $texts = Texts::where('model_id', 3)->orderBy('id')->get()->toArray();
         $result = [];
-        for ($i = 0, $max = sizeof($texts); $i < $max; $i++)
-        {
+        for ($i = 0, $max = sizeof($texts); $i < $max; $i++) {
             $texts[$i]['tags'] = LabelsTexts::where('text_id', $texts[$i]['id'])->get()->toArray();
-            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++)
-            {
+            for ($j = 0, $max2 = sizeof($texts[$i]['tags']); $j < $max2; $j++) {
                 $texts[$i]['tags'][$j] = Labels::where('id', $texts[$i]['tags'][$j]['model_id'])->get()->toArray()[0]['name'];
             }
 
-            if (sizeof(array_intersect($texts[$i]['tags'], $tags)) === sizeof($tags) and sizeof($tags) !== 0)
-            {
+            if (sizeof(array_intersect($texts[$i]['tags'], $tags)) === sizeof($tags) and sizeof($tags) !== 0) {
                 $result[] = $texts[$i]['text'];
             }
         }
@@ -105,7 +113,7 @@ class ModelsController extends Controller
      * @param array $words - массив слов
      * @return array
      */
-    public function normalizeMyStem ($words)
+    public function normalizeMyStem($words)
     {
         $words = array_values(array_unique($words));
         $file_name = '../lib/' . time() . rand(0, 1000);
@@ -117,12 +125,10 @@ class ModelsController extends Controller
         unlink($file_name);
         $result = explode("\n", $result);
         $lemms = [];
-        for ($i = 0, $max = sizeof($result); $i < $max; $i++)
-        {
+        for ($i = 0, $max = sizeof($result); $i < $max; $i++) {
             $result[$i] = preg_replace("/\?/", '', $result[$i]);
             $result[$i] = preg_match("/([^{]*){([^}]*)}/", $result[$i], $matches);
-            if ($matches)
-            {
+            if ($matches) {
                 $lemms[$matches[1]] = explode('|', $matches[2]);
             }
         }
@@ -135,7 +141,7 @@ class ModelsController extends Controller
      * @param array $lemms
      * @return mixed
      */
-    public	function normalizWord (&$word, &$lemms)
+    public function normalizWord(&$word, &$lemms)
     {
         $normWord = $word;
         if (isset($lemms[$word]) and $lemms[$word]) //если есть нормальная форма для слова (без спец. символов)
@@ -153,7 +159,7 @@ class ModelsController extends Controller
      */
     public function index()
     {
-        return Models::with('Labels')->where('id', '<>', 4) -> get()->toArray();
+        return Models::with('Labels')->where('id', '<>', 4)->get()->toArray();
     }
 
     /**
@@ -167,7 +173,7 @@ class ModelsController extends Controller
         $model->name = $request->get("name");
 
         if ($model->save()) {
-            return response()->json($model -> toArray(), 200);
+            return response()->json($model->toArray(), 200);
         }
 
         return response()->json(['status' => 'cant save model'], 500);
@@ -204,7 +210,7 @@ class ModelsController extends Controller
         return response()->json(['status' => 'ok'], 200);
     }
 
-    public function test ()
+    public function test()
     {
         $texts = [
             'Домашний интернет — стабильный доступ к глобальной сети по удобному тарифу',
@@ -215,23 +221,19 @@ class ModelsController extends Controller
     /**
      * Запуск обучения модели
      */
-    public function run (int $model_id)
+    public function run(int $model_id)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $headers = ['ContentType' => 'application/json'];
 
 
-        try
-        {
-            $response = $client -> get("http://auto-ml:8080/train/".$model_id);
-            $content = json_decode($response -> getBody() -> getContents(), true);
+        try {
+            $response = $client->get("http://auto-ml:8080/train/" . $model_id);
+            $content = json_decode($response->getBody()->getContents(), true);
 
             return $content;
-        }
-        catch (RequestException $e)
-        {
-            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400)
-            {
+        } catch (RequestException $e) {
+            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400) {
                 throw new HttpResponseException(response()->json(['errors' => ['Не удалось получить']], 400));
             }
         }
@@ -240,32 +242,28 @@ class ModelsController extends Controller
     /**
      * Получение информации о процессе обучения модели
      */
-    public function info (int $model_id)
+    public function info(int $model_id)
     {
     }
 
     /**
      * Получение информации о процессе обучения модели
      */
-    public function testRequest (int $model_id, \Illuminate\Http\Request $request)
+    public function testRequest(int $model_id, \Illuminate\Http\Request $request)
     {
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $headers = ['ContentType' => 'application/json'];
 
         $params = ['text' => $request->get('text')];
 
-        try
-        {
-            $response = $client -> post("http://auto-ml:8080/predict/".$model_id, ['headers' => $headers, 'json' => $params]);
-            $content = json_decode($response -> getBody() -> getContents(), true);
+        try {
+            $response = $client->post("http://auto-ml:8080/predict/" . $model_id, ['headers' => $headers, 'json' => $params]);
+            $content = json_decode($response->getBody()->getContents(), true);
 
             return $content;
-        }
-        catch (RequestException $e)
-        {
-            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400)
-            {
+        } catch (RequestException $e) {
+            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400) {
                 throw new HttpResponseException(response()->json(['errors' => ['Не удалось получить']], 400));
             }
         }
