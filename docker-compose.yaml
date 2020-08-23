@@ -21,22 +21,29 @@ services:
       context: ./auto-ml
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./auto-ml/gensim-data:/root/gensim-data
+      - ./auto-ml/start.py:/usr/src/app/start.py
+      - ./auto-ml/models:/usr/src/app/models
     ports:
       - "8080:8080"
     networks:
       - backend
     command: ["python", "./start.py"]
   jupyter:
-    hostname: auto-ml
+    hostname: jupyter
     build:
       context: ./auto-ml
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./auto-ml/notebook:/usr/src/app/notebook
+      - ./auto-ml/gensim-data:/root/gensim-data
     ports:
-      - "8080:8080"
+      - "8888:8888"
     networks:
       - backend
-    command: ["jupyter", "notebook"]
+    command: ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root"]
   api:
     hostname: api
     image: api-image

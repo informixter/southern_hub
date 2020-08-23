@@ -1,3 +1,7 @@
 .idea
 api/vendor
 pgdata
+auto-ml/notebook/.ipynb_checkpoints
+auto-ml/notebook/text_classifier
+auto-ml/notebook/auto_model
+auto-ml/gensim-data/word2vec-ruscorpora-300/word2vec-ruscorpora-300.gz
