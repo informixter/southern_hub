@@ -20,9 +20,9 @@ export class AnotherService {
     return this.httpClient.get(`http://localhost/api/models/${idModel}/info`);
   }
 
-  testRequest (idModel)
+  testRequest (idModel, text)
   {
-    return this.httpClient.get(`http://localhost/api/models/${idModel}/testRequest`);
+    return this.httpClient.post(`http://localhost/api/models/${idModel}/testRequest`, {text});
   }
 
 

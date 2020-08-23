@@ -29,7 +29,7 @@ Route::delete('/models/{modelid}', 'ModelsController@destroy');
 
 Route::get('/models/{model_id}/run', 'ModelsController@run');
 Route::get('/models/{model_id}/info', 'ModelsController@info');
-Route::get('/models/{model_id}/testRequest', 'ModelsController@testRequest');
+Route::post('/models/{model_id}/testRequest', 'ModelsController@testRequest');
 
 Route::get('/labels/{model_id}', 'LabelsController@index');
 Route::post('/labels/{model_id}', 'LabelsController@create');

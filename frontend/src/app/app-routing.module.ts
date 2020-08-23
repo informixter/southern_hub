@@ -4,6 +4,7 @@ import {ConfigureComponent} from "./configure/configure.component";
 import {TextsComponent} from "./texts/texts.component";
 import {ModelsComponent} from "./models/models.component";
 import {UserInputComponent} from "./user-input/user-input.component";
+import {TestComponent} from "./test/test.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path : 'user',
     component : UserInputComponent
+  },
+  {
+    path : 'test/:idModel',
+    component : TestComponent
   },
   {
     path : '**',

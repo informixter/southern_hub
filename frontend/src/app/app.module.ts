@@ -23,6 +23,7 @@ import { ModelsComponent } from './models/models.component';
 import { UserInputComponent } from './user-input/user-input.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {AnotherService} from "./another.service";
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {AnotherService} from "./another.service";
     TextsComponent,
     ItemComponent,
     ModelsComponent,
-    UserInputComponent
+    UserInputComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

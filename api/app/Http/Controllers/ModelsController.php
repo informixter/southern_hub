@@ -95,6 +95,8 @@ class ModelsController extends Controller
             }
         }
 
+        $result = array_reverse($result);
+        $result[] = 'Позвать сотрудника';
         return $result;
     }
 
@@ -227,10 +229,10 @@ class ModelsController extends Controller
     /**
      * Получение информации о процессе обучения модели
      */
-    public function testRequest (int $model_id)
+    public function testRequest (int $model_id, \Illuminate\Http\Request $request)
     {
-        $phrase = 'Интернет говно';
+        $text = $request->get("name");
         //$tags = магияML($phrase);
-        //return $tags;
+        return ['1', '2', '3'];
     }
 }
