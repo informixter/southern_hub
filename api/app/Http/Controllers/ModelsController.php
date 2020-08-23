@@ -217,6 +217,24 @@ class ModelsController extends Controller
      */
     public function run (int $model_id)
     {
+        $client = new \GuzzleHttp\Client();
+        $headers = ['ContentType' => 'application/json'];
+
+
+        try
+        {
+            $response = $client -> get("http://auto-ml:8080/train/".$model_id);
+            $content = json_decode($response -> getBody() -> getContents(), true);
+
+            return $content;
+        }
+        catch (RequestException $e)
+        {
+            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400)
+            {
+                throw new HttpResponseException(response()->json(['errors' => ['Не удалось получить']], 400));
+            }
+        }
     }
 
     /**
@@ -231,8 +249,27 @@ class ModelsController extends Controller
      */
     public function testRequest (int $model_id, \Illuminate\Http\Request $request)
     {
-        $phrase = 'Интернет говно';
-        //$tags = магияML($phrase);
-        //return $tags;
+
+        $client = new \GuzzleHttp\Client();
+        $headers = ['ContentType' => 'application/json'];
+
+        $params = ['text' => $request->get('text')];
+
+        try
+        {
+            $response = $client -> post("http://auto-ml:8080/predict/".$model_id, ['headers' => $headers, 'json' => $params]);
+            $content = json_decode($response -> getBody() -> getContents(), true);
+
+            return $content;
+        }
+        catch (RequestException $e)
+        {
+            if ($e->hasResponse() and $e->getResponse()->getStatusCode() === 400)
+            {
+                throw new HttpResponseException(response()->json(['errors' => ['Не удалось получить']], 400));
+            }
+        }
+
+
     }
 }
