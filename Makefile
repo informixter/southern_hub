@@ -11,6 +11,8 @@ build_front_end:
 
 build: build_api build_auto_ml build_front_end
 
-
 run:
 	docker-compose up -d nginx backend_shiva postgres auto-ml
+
+down:
+	docker-compose down
