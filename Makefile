@@ -14,8 +14,16 @@ build: build_api build_auto_ml build_front_end
 run:
 	docker-compose up -d nginx backend_shiva postgres auto-ml
 
-down:
+stop:
 	docker-compose down
 
 download:
 	curl -o ./auto-ml/gensim-data/word2vec-ruscorpora-300/word2vec-ruscorpora-300.gz https://59830.selcdn.ru/insrt.ru/word2vec-ruscorpora-300.gz
+
+install: download build install_data
+
+install_data:
+	docker-compose up -d backend_shiva
+	sleep 10
+	docker-compose exec backend_shiva bash -c "cd backend && composer install && php artisan migrate && php artisan db:seed"
+	make stop

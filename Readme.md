@@ -5,6 +5,11 @@
 `auto-ml/gensim-data/word2vec-ruscorpora-300/` название файла должно быть не изменным `word2vec-ruscorpora-300.gz`
 
 ### сборка
-`make build`
+`make install`
 
-### протянуть модель векторизации
+### Запуск
+`make run`
+
+### Остоновить
+`make stop`
+
