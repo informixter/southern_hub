@@ -209,4 +209,28 @@ class ModelsController extends Controller
             'Телевидение — каналы на любой вкус за скромные деньги',
         ];
     }
+
+    /**
+     * Запуск обучения модели
+     */
+    public function run (int $model_id)
+    {
+    }
+
+    /**
+     * Получение информации о процессе обучения модели
+     */
+    public function info (int $model_id)
+    {
+    }
+
+    /**
+     * Получение информации о процессе обучения модели
+     */
+    public function testRequest (int $model_id)
+    {
+        $phrase = 'Интернет говно';
+        //$tags = магияML($phrase);
+        //return $tags;
+    }
 }
