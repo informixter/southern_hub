@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-center">
+  <div class="w-75">
+    <mat-form-field class="w-100" appearance="outline">
+      <input [(ngModel)]="input" (blur)="onChange()" matInput placeholder="Что вы ищете?">
+    </mat-form-field>
+
+    <mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="2" color="primary"></mat-spinner>
+
+    <div *ngIf="!loading" class="tags ml-1">
+      <span *ngFor="let item of result" class="tag mb-2">{{item}}</span>
+    </div>
+  </div>
+</div>

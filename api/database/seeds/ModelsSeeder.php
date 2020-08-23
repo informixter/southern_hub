@@ -14,15 +14,15 @@ class ModelsSeeder extends Seeder
     public function run()
     {
         DB::table('models')->insert([
-            'name' => "Первая модель",
+            'name' => "Классификатор текста",
             'status' => 'markup',
             'type' => 'classification',
         ]);
 
         DB::table('models')->insert([
-            'name' => "Вторая модель",
+            'name' => "Анализатор синонимов",
             'status' => 'markup',
-            'type' => 'classification',
+            'type' => 'sinonims',
         ]);
     }
 }

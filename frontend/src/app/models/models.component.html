@@ -1,0 +1,26 @@
+
+
+<h1 class="header d-flex justify-content-between">
+  <span>
+    Модели
+  </span>
+  <button (click)="add()" mat-raised-button color="primary">
+    <mat-icon>add</mat-icon>
+    Добавить модель
+  </button>
+</h1>
+
+<mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="2" color="primary"></mat-spinner>
+
+<div class="row">
+  <div *ngFor="let model of models; let i = index" class="col-4 mb-4 item-block" (click)="open(model)">
+    <mat-card>
+      <mat-icon>{{i === 0 ? 'shuffle' : 'call_split'}}</mat-icon>
+      <div>
+        <div class="text">{{model.name}}</div>
+        <div class="label">Классификация</div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+

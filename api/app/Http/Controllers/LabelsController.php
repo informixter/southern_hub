@@ -15,7 +15,7 @@ class LabelsController extends Controller
      */
     public function index(int $id)
     {
-        return Labels::where('model_id', $id)->get()->pluck('name', 'id')->toArray();
+        return Labels::where('model_id', $id)->get()->toArray();
     }
 
     /**
@@ -32,7 +32,7 @@ class LabelsController extends Controller
         $label->model_id = $model_id;
 
         if ($label->save()) {
-            return response()->json(['status' => 'ok'], 200);
+            return response()->json($label -> toArray(), 200);
         }
 
         return response()->json(['status' => 'cant save model'], 500);
