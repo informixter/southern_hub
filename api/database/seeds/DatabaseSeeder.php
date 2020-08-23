@@ -53,6 +53,10 @@ class DatabaseSeeder extends Seeder
         foreach ($tags as $tag)
         {
             DB::table('labels')->insert(['name' => $tag, 'model_id' => 1]);
+        }
+
+        foreach ($tags as $tag)
+        {
             DB::table('labels')->insert(['name' => $tag, 'model_id' => 3]);
         }
 
