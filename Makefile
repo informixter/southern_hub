@@ -9,7 +9,7 @@ build_api:
 build_front_end:
 	cd frontend && docker build --rm -t $(FRONTEND_IMAGE_NAME) .
 
-build: build_api build_auto_ml build_front_end
+build: build_api build_front_end
 
 run:
 	docker-compose up -d nginx backend_shiva postgres auto-ml
@@ -25,5 +25,5 @@ install: download build install_data
 install_data:
 	docker-compose up -d backend_shiva
 	sleep 10
-	docker-compose exec backend_shiva bash -c "cd backend && composer install && php artisan migrate && php artisan db:seed"
+	docker-compose exec backend_shiva bash -c "cd backend && chmod -R 0777 ./ && composer install && php artisan migrate && php artisan db:seed"
 	make stop
