@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-subtitle>
+    Исходный текст
+  </mat-card-subtitle>
+  <mat-form-field>
+    <textarea [(ngModel)]="text" rows="20" matInput></textarea>
+    <mat-hint></mat-hint>
+  </mat-form-field>
+</mat-card>
+
+<button (click)="go()" [disabled]="loading" mat-raised-button color="primary" class="mt-3">Отправить на проверку</button>
+
+<div *ngIf="result" class="mt-5 mb-5 pb-5">
+  <h1>Результат</h1>
+  {{result}}
+</div>
