@@ -140,3 +140,4 @@ app.router.add_route('/predict/{model}', predict_model)
 app.router.add_route('/train/{model}', train_model)
 app.router.add_route('/', echo_service)
 app.run(debug=True)
+
