@@ -16,3 +16,6 @@ run:
 
 down:
 	docker-compose down
+
+download:
+	curl -o ./auto-ml/gensim-data/word2vec-ruscorpora-300/word2vec-ruscorpora-300.gz https://59830.selcdn.ru/insrt.ru/word2vec-ruscorpora-300.gz
