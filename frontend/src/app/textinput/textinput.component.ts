@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-textinput',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./textinput.component.scss']
 })
 export class TextinputComponent implements OnInit {
+
+  @Input() text;
 
   constructor() { }
 

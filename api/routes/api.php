@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/models/{model_id}/texts', 'TextsController@index');
+Route::post('/models/search', 'ModelsController@search');
+Route::get('/models/search', 'ModelsController@search2');
+Route::post('/models/{model_id}/texts', 'TextsController@addText');
+Route::get('/texts/{textId}', 'TextsController@byId');
+Route::put('/texts/{textId}', 'TextsController@editText');
+Route::post('/texts/{textId}/labels', 'TextsController@saveLabels');
 Route::get('/models', 'ModelsController@index');
 Route::post('/models', 'ModelsController@create');
 Route::put('/models/{model_id}', 'ModelsController@edit');

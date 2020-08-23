@@ -11,7 +11,7 @@ const routes: Routes = [
     component : ModelsComponent
   },
   {
-    path : 'text-detail/:idText',
+    path : 'text-detail/:idModel/:idText',
     component : ConfigureComponent
   },
   {

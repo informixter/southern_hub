@@ -11,21 +11,23 @@
         <input [(ngModel)]="newTag" matInput placeholder="Новый тэг">
       </mat-form-field>
 
-      <button (click)="addTag()" mat-icon-button class="mt-2 ml-2">
+      <button [disabled]="tagAdding" (click)="addTag()" mat-icon-button class="mt-2 ml-2">
         <mat-icon matSuffix>add</mat-icon>
       </button>
 
     </div>
 
     <mat-list>
-      <mat-list-item *ngFor="let tag of tags" class="tag">
-        <mat-icon mat-list-icon>tag</mat-icon>
-        <div mat-line>
+      <mat-selection-list #shoes>
+        <mat-list-option *ngFor="let tag of tags" class="tag" [selected]="isSelect(tag)" (click)="toggleSelect(tag)">
+          <mat-icon (click)="onDelete(tag)" mat-list-icon>delete</mat-icon>
+          <div mat-line>
           <span class="tag-text">
-            {{tag}}
+            {{tag.name}}
           </span>
-        </div>
-      </mat-list-item>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
     </mat-list>
 
   </mat-card-content>

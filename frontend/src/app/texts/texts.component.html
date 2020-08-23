@@ -1,0 +1,25 @@
+<h1 class="header d-flex justify-content-between">
+  <span>
+    <button [routerLink]="['/models']" style="vertical-align: 5px" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+    Исходные данные <span *ngIf="model">для модели «{{model.name}}»</span>
+  </span>
+  <button (click)="add()" mat-raised-button color="primary">
+    <mat-icon>add</mat-icon>
+    Добавить текст
+  </button>
+</h1>
+
+<mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="2" color="primary"></mat-spinner>
+
+<div class="row">
+  <div *ngFor="let text of texts" class="col-4 mb-4 item-block" (click)="open(text)">
+    <mat-card>
+      <div class="text">{{getTextPreview(text.text)}}</div>
+      <div class="tags">
+        <span *ngFor="let tag of text.tags" class="tag mb-2">{{tag.name}}</span>
+      </div>
+    </mat-card>
+  </div>
+</div>

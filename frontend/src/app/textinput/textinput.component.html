@@ -3,7 +3,7 @@
     Исходный текст
   </mat-card-subtitle>
   <mat-form-field>
-    <textarea rows="20" matInput></textarea>
+    <textarea [(ngModel)]="text.text" rows="20" matInput></textarea>
     <mat-hint>Это может быть текст обращения или вариация названия услуги</mat-hint>
   </mat-form-field>
 </mat-card>
